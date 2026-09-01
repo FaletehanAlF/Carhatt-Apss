@@ -1,5 +1,7 @@
+import 'package:carhartt_shop/pages/profilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'homePage.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -81,7 +83,6 @@ class LoginPage extends StatelessWidget {
                     decoration: InputDecoration(
                       hintText: 'Enter your email',
                       prefixIcon: const Icon(Icons.email_outlined),
-
                       filled: true,
                       fillColor: const Color(0xFFF8F8F8),
 
@@ -136,7 +137,14 @@ class LoginPage extends StatelessWidget {
                     height: 52,
 
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomePage(),
+                          ),
+                        );
+                      },
 
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFFFC72C),
@@ -159,7 +167,7 @@ class LoginPage extends StatelessWidget {
 
                   const SizedBox(height: 24),
 
-                  // Register text
+                  // Register
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
