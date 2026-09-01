@@ -24,7 +24,7 @@ class RegisterPage extends StatelessWidget {
               // Logo
               Center(
                 child: Image.asset(
-                  'assets/images/carhartt_logo.png',
+                  'assets/images/logo.png',
                   width: 110,
                   height: 110,
                 ),
