@@ -182,25 +182,25 @@ class HomePage extends StatelessWidget {
                 productItem(
                   'K87 T-Shirt',
                   'Rp 599.000',
-                  'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800',
+                  'https://i.pinimg.com/1200x/27/d1/a0/27d1a069410f499dc4c91b2aee7306c0.jpg',
                 ),
 
                 productItem(
                   'Midweight Hoodie',
                   'Rp 899.000',
-                  'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800',
+                  'https://i.pinimg.com/1200x/ee/1a/b4/ee1ab49c70520f6f8d8b00c96cab6bdf.jpg',
                 ),
 
                 productItem(
                   'Detroit Jacket',
                   'Rp 1.499.000',
-                  'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800',
+                  'https://i.pinimg.com/736x/62/59/51/625951708719a29228a1ddff35fa507d.jpg',
                 ),
 
                 productItem(
                   'Double Knee Pants',
                   'Rp 1.099.000',
-                  'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=800',
+                  'https://i.pinimg.com/1200x/b0/a4/91/b0a491f7b23b43b243f8e9cbc7c2d88c.jpg',
                 ),
               ],
             ),
