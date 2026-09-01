@@ -9,7 +9,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
 
-      // Header
+      // App Bar
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -35,6 +35,7 @@ class HomePage extends StatelessWidget {
         ],
       ),
 
+      // Body
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
 
@@ -42,12 +43,13 @@ class HomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-            // Greeting
+            // Title
             Text(
               'Discover Your Style',
               style: GoogleFonts.poppins(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
+                color: Colors.black,
               ),
             ),
 
@@ -67,7 +69,10 @@ class HomePage extends StatelessWidget {
             TextField(
               decoration: InputDecoration(
                 hintText: 'Search products...',
-                prefixIcon: const Icon(Icons.search),
+                prefixIcon: const Icon(
+                  Icons.search,
+                  color: Colors.grey,
+                ),
 
                 filled: true,
                 fillColor: Colors.white,
@@ -81,65 +86,24 @@ class HomePage extends StatelessWidget {
 
             const SizedBox(height: 25),
 
-            // Banner
+            // Network Banner Image
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(22),
+              height: 230,
 
               decoration: BoxDecoration(
-                color: const Color(0xFFFFC72C),
                 borderRadius: BorderRadius.circular(20),
               ),
 
-              child: Row(
-                children: [
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
 
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-
-                        Text(
-                          'NEW COLLECTION',
-                          style: GoogleFonts.poppins(
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1,
-                          ),
-                        ),
-
-                        const SizedBox(height: 8),
-
-                        Text(
-                          'Built for\nEveryday.',
-                          style: GoogleFonts.poppins(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                            height: 1.1,
-                          ),
-                        ),
-
-                        const SizedBox(height: 15),
-
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black,
-                            foregroundColor: Colors.white,
-                            elevation: 0,
-                          ),
-                          child: const Text('Shop Now'),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const Icon(
-                    Icons.shopping_bag,
-                    size: 75,
-                    color: Colors.black,
-                  ),
-                ],
+                child: Image.network(
+                  'https://i.pinimg.com/1200x/a2/cd/a8/a2cda87bc97ba349f492ef218fd53536.jpg',
+                  width: double.infinity,
+                  height: 180,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
 
@@ -175,7 +139,7 @@ class HomePage extends StatelessWidget {
 
             const SizedBox(height: 28),
 
-            // Products
+            // Product Title
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
@@ -204,7 +168,9 @@ class HomePage extends StatelessWidget {
             // Product Grid
             GridView.count(
               crossAxisCount: 2,
+
               shrinkWrap: true,
+
               physics: const NeverScrollableScrollPhysics(),
 
               crossAxisSpacing: 14,
@@ -285,6 +251,8 @@ class HomePage extends StatelessWidget {
         horizontal: 18,
       ),
 
+      alignment: Alignment.center,
+
       decoration: BoxDecoration(
         color: title == 'All'
             ? const Color(0xFFFFC72C)
@@ -292,8 +260,6 @@ class HomePage extends StatelessWidget {
 
         borderRadius: BorderRadius.circular(12),
       ),
-
-      alignment: Alignment.center,
 
       child: Text(
         title,
@@ -322,6 +288,7 @@ class HomePage extends StatelessWidget {
 
         children: [
 
+          // Image
           Expanded(
             child: ClipRRect(
               borderRadius: const BorderRadius.vertical(
@@ -336,6 +303,7 @@ class HomePage extends StatelessWidget {
             ),
           ),
 
+          // Product Info
           Padding(
             padding: const EdgeInsets.all(12),
 
@@ -343,6 +311,7 @@ class HomePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
 
               children: [
+
                 Text(
                   name,
                   maxLines: 1,
