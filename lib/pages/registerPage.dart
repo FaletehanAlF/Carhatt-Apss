@@ -25,8 +25,8 @@ class RegisterPage extends StatelessWidget {
               Center(
                 child: Image.asset(
                   'assets/images/logo.png',
-                  width: 110,
-                  height: 110,
+                  width: 265,
+                  height: 265,
                 ),
               ),
 
@@ -48,7 +48,7 @@ class RegisterPage extends StatelessWidget {
                 'Create your Carhartt account',
                 style: GoogleFonts.poppins(
                   fontSize: 14,
-                  color: Colors.grey.shade600,
+                  color: Colors.black,
                 ),
               ),
 
