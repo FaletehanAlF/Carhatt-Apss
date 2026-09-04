@@ -15,7 +15,21 @@ class _LoginPageState extends State<LoginPage> {
   final passwordController = TextEditingController();
 
   void login() {
-    
+    if (emailController.text == registeredEmail &&
+    passwordController.text == registeredPassword) {
+  Navigator.of(context).pushAndRemoveUntil(
+    MaterialPageRoute(
+      builder: (context) => const HomePage(),
+    ),
+    (route) => false,
+  );
+} else {
+  ScaffoldMessenger.of(context).showSnackBar(
+    const SnackBar(
+      content: Text('Email atau password tidak sesuai.'),
+    ),
+  );
+}
   }
 
   @override
