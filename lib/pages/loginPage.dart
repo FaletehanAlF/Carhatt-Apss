@@ -26,8 +26,8 @@ class LoginPage extends StatelessWidget {
               Center(
                 child: Image.asset(
                   'assets/images/logo.png',
-                  width: 110,
-                  height: 110,
+                  width: 245,
+                  height: 245,
                 ),
               ),
 
@@ -216,3 +216,4 @@ class LoginPage extends StatelessWidget {
     );
   }
 }
+
