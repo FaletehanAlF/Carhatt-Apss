@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import '../data/products.dart';
 import './homePage.dart';
 
@@ -24,10 +25,7 @@ class ProductsPage extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(
-              Icons.search,
-              color: Colors.black,
-            ),
+            icon: const Icon(Icons.search, color: Colors.black),
           ),
         ],
       ),
@@ -76,8 +74,7 @@ class ProductsPage extends StatelessWidget {
             child: GridView.builder(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
               itemCount: products.length,
-              gridDelegate:
-                  const SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 14,
                 mainAxisSpacing: 20,
@@ -86,9 +83,7 @@ class ProductsPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 final product = products[index];
 
-                return ProductItem(
-                  product: product,
-                );
+                return ProductItem(product: product);
               },
             ),
           ),
@@ -97,21 +92,13 @@ class ProductsPage extends StatelessWidget {
     );
   }
 
-  Widget categoryItem(
-    String title, {
-    bool selected = false,
-  }) {
+  Widget categoryItem(String title, {bool selected = false}) {
     return Container(
       margin: const EdgeInsets.only(right: 10),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 18,
-        vertical: 10,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: selected
-            ? const Color(0xFFFFC72C)
-            : Colors.white,
+        color: selected ? const Color(0xFFFFC72C) : Colors.white,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
@@ -129,26 +116,17 @@ class ProductsPage extends StatelessWidget {
 class ProductItem extends StatelessWidget {
   final Map<String, dynamic> product;
 
-  const ProductItem({
-    super.key,
-    required this.product,
-  });
+  const ProductItem({super.key, required this.product});
 
-  void toggleFavorite(
-    BuildContext context,
-    String name,
-  ) {
-    final updatedFavorites =
-        Set<String>.from(favoriteProducts.value);
+  void toggleFavorite(BuildContext context, String name) {
+    final updatedFavorites = Set<String>.from(favoriteProducts.value);
 
     if (updatedFavorites.contains(name)) {
       updatedFavorites.remove(name);
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-            '$name dihapus dari favorite',
-          ),
+          content: Text('$name dihapus dari favorite'),
           duration: const Duration(seconds: 2),
         ),
       );
@@ -157,9 +135,7 @@ class ProductItem extends StatelessWidget {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-            '$name berhasil ditambahkan ke favorite',
-          ),
+          content: Text('$name berhasil ditambahkan ke favorite'),
           duration: const Duration(seconds: 2),
         ),
       );
@@ -170,23 +146,18 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String name =
-        product['name']?.toString() ?? 'Nama Produk';
+    final String name = product['name']?.toString() ?? 'Nama Produk';
 
-    final String category =
-        product['category']?.toString() ?? 'Category';
+    final String category = product['category']?.toString() ?? 'Category';
 
-    final String price =
-        product['price']?.toString() ?? '0';
+    final String price = product['price']?.toString() ?? '0';
 
-    final String? image =
-        product['image']?.toString();
+    final String? image = product['image']?.toString();
 
     return ValueListenableBuilder<Set<String>>(
       valueListenable: favoriteProducts,
       builder: (context, favorites, child) {
-        final bool isFavorite =
-            favorites.contains(name);
+        final bool isFavorite = favorites.contains(name);
 
         return Container(
           decoration: BoxDecoration(
@@ -194,8 +165,7 @@ class ProductItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
           ),
           child: Column(
-            crossAxisAlignment:
-                CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: Stack(
@@ -204,24 +174,17 @@ class ProductItem extends StatelessWidget {
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius:
-                            BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(16),
                       ),
                       child: ClipRRect(
-                        borderRadius:
-                            BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(16),
                         child: image != null
                             ? Image.asset(
                                 image,
                                 width: double.infinity,
                                 height: double.infinity,
                                 fit: BoxFit.cover,
-                                errorBuilder:
-                                    (
-                                  context,
-                                  error,
-                                  stackTrace,
-                                ) {
+                                errorBuilder: (context, error, stackTrace) {
                                   return const Center(
                                     child: Icon(
                                       Icons.image_outlined,
@@ -244,25 +207,17 @@ class ProductItem extends StatelessWidget {
                       top: 10,
                       right: 10,
                       child: Container(
-                        decoration:
-                            const BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Colors.white,
                           shape: BoxShape.circle,
                         ),
                         child: IconButton(
                           onPressed: () {
-                            toggleFavorite(
-                              context,
-                              name,
-                            );
+                            toggleFavorite(context, name);
                           },
                           icon: Icon(
-                            isFavorite
-                                ? Icons.favorite
-                                : Icons.favorite_border,
-                            color: isFavorite
-                                ? Colors.red
-                                : Colors.black,
+                            isFavorite ? Icons.favorite : Icons.favorite_border,
+                            color: isFavorite ? Colors.red : Colors.black,
                           ),
                         ),
                       ),
@@ -273,18 +228,15 @@ class ProductItem extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(12),
                 child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       name,
                       maxLines: 1,
-                      overflow:
-                          TextOverflow.ellipsis,
+                      overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.poppins(
                         fontSize: 14,
-                        fontWeight:
-                            FontWeight.w600,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     const SizedBox(height: 3),
@@ -292,8 +244,7 @@ class ProductItem extends StatelessWidget {
                       category,
                       style: GoogleFonts.poppins(
                         fontSize: 12,
-                        color:
-                            Colors.grey.shade600,
+                        color: Colors.grey.shade600,
                       ),
                     ),
                     const SizedBox(height: 3),
@@ -301,10 +252,8 @@ class ProductItem extends StatelessWidget {
                       'Rp $price',
                       style: GoogleFonts.poppins(
                         fontSize: 13,
-                        fontWeight:
-                            FontWeight.bold,
-                        color:
-                            const Color(0xFFB8860B),
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFFB8860B),
                       ),
                     ),
                   ],

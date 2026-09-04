@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'loginPage.dart';
 
 String registeredName = '';
@@ -33,9 +34,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(
-        builder: (context) => const LoginPage(),
-      ),
+      MaterialPageRoute(builder: (context) => const LoginPage()),
     );
   }
 
@@ -45,10 +44,7 @@ class _RegisterPageState extends State<RegisterPage> {
       backgroundColor: const Color(0xFFF5F5F5),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 28,
-            vertical: 40,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 40),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -75,10 +71,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
               Text(
                 'Create your Carhartt account',
-                style: GoogleFonts.poppins(
-                  fontSize: 14,
-                  color: Colors.black,
-                ),
+                style: GoogleFonts.poppins(fontSize: 14, color: Colors.black),
               ),
 
               const SizedBox(height: 35),
@@ -152,9 +145,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 decoration: InputDecoration(
                   hintText: 'Create a password',
                   prefixIcon: const Icon(Icons.lock_outline),
-                  suffixIcon: const Icon(
-                    Icons.visibility_off_outlined,
-                  ),
+                  suffixIcon: const Icon(Icons.visibility_off_outlined),
                   filled: true,
                   fillColor: Colors.white,
                   border: OutlineInputBorder(
