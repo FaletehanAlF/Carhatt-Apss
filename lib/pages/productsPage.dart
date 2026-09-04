@@ -305,4 +305,4 @@ class ProductItem extends StatelessWidget {
     );
   }
 }
-```
+
