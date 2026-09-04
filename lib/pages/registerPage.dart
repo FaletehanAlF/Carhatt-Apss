@@ -2,26 +2,56 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'loginPage.dart';
 
-class RegisterPage extends StatelessWidget {
+String registeredName = '';
+String registeredEmail = '';
+String registeredPassword = '';
+
+class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
+
+  @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  void createAccount() {
+    registeredName = nameController.text;
+    registeredEmail = emailController.text;
+    registeredPassword = passwordController.text;
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const LoginPage(),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
-
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(
             horizontal: 28,
             vertical: 40,
           ),
-
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
-              // Logo
               Center(
                 child: Image.asset(
                   'assets/images/logo.png',
@@ -32,7 +62,6 @@ class RegisterPage extends StatelessWidget {
 
               const SizedBox(height: 35),
 
-              // Title
               Text(
                 'Create Account',
                 style: GoogleFonts.poppins(
@@ -54,7 +83,6 @@ class RegisterPage extends StatelessWidget {
 
               const SizedBox(height: 35),
 
-              // Name
               Text(
                 'Name',
                 style: GoogleFonts.poppins(
@@ -66,16 +94,12 @@ class RegisterPage extends StatelessWidget {
               const SizedBox(height: 8),
 
               TextField(
+                controller: nameController,
                 decoration: InputDecoration(
                   hintText: 'Enter your name',
-
-                  prefixIcon: const Icon(
-                    Icons.person_outline,
-                  ),
-
+                  prefixIcon: const Icon(Icons.person_outline),
                   filled: true,
                   fillColor: Colors.white,
-
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
@@ -85,7 +109,6 @@ class RegisterPage extends StatelessWidget {
 
               const SizedBox(height: 22),
 
-              // Email
               Text(
                 'Email',
                 style: GoogleFonts.poppins(
@@ -97,18 +120,13 @@ class RegisterPage extends StatelessWidget {
               const SizedBox(height: 8),
 
               TextField(
+                controller: emailController,
                 keyboardType: TextInputType.emailAddress,
-
                 decoration: InputDecoration(
                   hintText: 'Enter your email',
-
-                  prefixIcon: const Icon(
-                    Icons.email_outlined,
-                  ),
-
+                  prefixIcon: const Icon(Icons.email_outlined),
                   filled: true,
                   fillColor: Colors.white,
-
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
@@ -118,7 +136,6 @@ class RegisterPage extends StatelessWidget {
 
               const SizedBox(height: 22),
 
-              // Password
               Text(
                 'Password',
                 style: GoogleFonts.poppins(
@@ -130,22 +147,16 @@ class RegisterPage extends StatelessWidget {
               const SizedBox(height: 8),
 
               TextField(
+                controller: passwordController,
                 obscureText: true,
-
                 decoration: InputDecoration(
                   hintText: 'Create a password',
-
-                  prefixIcon: const Icon(
-                    Icons.lock_outline,
-                  ),
-
+                  prefixIcon: const Icon(Icons.lock_outline),
                   suffixIcon: const Icon(
                     Icons.visibility_off_outlined,
                   ),
-
                   filled: true,
                   fillColor: Colors.white,
-
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
@@ -155,24 +166,19 @@ class RegisterPage extends StatelessWidget {
 
               const SizedBox(height: 30),
 
-              // Create Account Button
               SizedBox(
                 width: double.infinity,
                 height: 54,
-
                 child: ElevatedButton(
-                  onPressed: () {},
-
+                  onPressed: createAccount,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFFFC72C),
                     foregroundColor: Colors.black,
                     elevation: 0,
-
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-
                   child: Text(
                     'Create Account',
                     style: GoogleFonts.poppins(
@@ -185,11 +191,9 @@ class RegisterPage extends StatelessWidget {
 
               const SizedBox(height: 35),
 
-              // Login
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-
                   Text(
                     'Already have an account? ',
                     style: GoogleFonts.poppins(
@@ -197,7 +201,6 @@ class RegisterPage extends StatelessWidget {
                       color: Colors.grey.shade600,
                     ),
                   ),
-
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -207,7 +210,6 @@ class RegisterPage extends StatelessWidget {
                         ),
                       );
                     },
-
                     child: Text(
                       'Login',
                       style: GoogleFonts.poppins(
