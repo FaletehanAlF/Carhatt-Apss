@@ -247,7 +247,7 @@ class _HomePageState extends State<HomePage> {
 
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite_outlined),
-            label: 'Wishlist',
+            label: 'Favorites',
           ),
 
           BottomNavigationBarItem(
