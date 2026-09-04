@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import './productsPage.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -216,6 +222,17 @@ class HomePage extends StatelessWidget {
 
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.grey,
+
+        onTap: (index) {
+          if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ProductsPage(),
+              ),
+            );
+          }
+        },
 
         items: const [
           BottomNavigationBarItem(
