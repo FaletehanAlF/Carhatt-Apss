@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import './productsPage.dart';
 import './favoritePage.dart';
 import './profilePage.dart';
