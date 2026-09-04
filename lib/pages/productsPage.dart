@@ -1,38 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import '../data/products.dart';
 
-class ProductsPage extends StatefulWidget {
+class ProductsPage extends StatelessWidget {
   const ProductsPage({super.key});
 
   @override
-  State<ProductsPage> createState() => _ProductsPageState();
-}
-
-class _ProductsPageState extends State<ProductsPage> {
-  String selectedCategory = 'All';
-
-  final List<String> categories = [
-    'All',
-    'T-Shirt',
-    'Hoodie',
-    'Jacket',
-    'Pants',
-    'Bag',
-    'Accessories',
-  ];
-
-  @override
   Widget build(BuildContext context) {
-    final filteredProducts = selectedCategory == 'All'
-        ? products
-        : products
-              .where((product) => product['category'] == selectedCategory)
-              .toList();
-
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFF5F5F5),
 
       // ================= APP BAR =================
       appBar: AppBar(
@@ -49,7 +25,10 @@ class _ProductsPageState extends State<ProductsPage> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.search, color: Colors.black),
+            icon: const Icon(
+              Icons.search,
+              color: Colors.black,
+            ),
           ),
         ],
       ),
@@ -58,110 +37,132 @@ class _ProductsPageState extends State<ProductsPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Description
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
+            padding: const EdgeInsets.fromLTRB(
+              20,
+              8,
+              20,
+              16,
+            ),
             child: Text(
               'Find your everyday essentials.',
-              style: GoogleFonts.poppins(fontSize: 14, color: Colors.grey),
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                color: Colors.grey.shade600,
+              ),
             ),
           ),
 
           // ================= CATEGORY =================
           SizedBox(
-            height: 42,
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+            height: 45,
+            child: ListView(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+              ),
               scrollDirection: Axis.horizontal,
-              itemCount: categories.length,
-              itemBuilder: (context, index) {
-                final category = categories[index];
-                final isSelected = selectedCategory == category;
-
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedCategory = category;
-                    });
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 10),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 18,
-                      vertical: 10,
-                    ),
-                    decoration: BoxDecoration(
-                      color: isSelected ? Colors.black : Colors.grey.shade100,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      category,
-                      style: GoogleFonts.poppins(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: isSelected ? Colors.white : Colors.black,
-                      ),
-                    ),
-                  ),
-                );
-              },
+              children: [
+                categoryItem(
+                  'All',
+                  selected: true,
+                ),
+                categoryItem('T-Shirt'),
+                categoryItem('Hoodie'),
+                categoryItem('Jacket'),
+                categoryItem('Pants'),
+                categoryItem('Bag'),
+                categoryItem('Accessories'),
+              ],
             ),
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 22),
 
           // ================= JUMLAH PRODUK =================
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+            ),
             child: Text(
-              '${filteredProducts.length} Products',
+              '${products.length} Products',
               style: GoogleFonts.poppins(
-                fontSize: 16,
+                fontSize: 17,
                 fontWeight: FontWeight.w600,
               ),
             ),
           ),
 
-          const SizedBox(height: 12),
+          const SizedBox(height: 14),
 
           // ================= PRODUCT GRID =================
           Expanded(
             child: GridView.builder(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-              itemCount: filteredProducts.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              padding: const EdgeInsets.fromLTRB(
+                20,
+                0,
+                20,
+                20,
+              ),
+              itemCount: products.length,
+              gridDelegate:
+                  const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 14,
                 mainAxisSpacing: 20,
                 childAspectRatio: 0.68,
               ),
               itemBuilder: (context, index) {
-                final product = filteredProducts[index];
+                final product = products[index];
 
                 return ProductItem(
                   product: product,
-
-                  // Klik card produk
                   onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(
                       SnackBar(
                         content: Text(
                           'Kamu memilih ${product['name'] ?? 'Produk'}',
                         ),
+                        duration:
+                            const Duration(seconds: 2),
                       ),
                     );
-                  },
-
-                  // Tombol favorite
-                  onFavoritePressed: () {
-                    setState(() {
-                      product['isFavorite'] = !(product['isFavorite'] ?? false);
-                    });
                   },
                 );
               },
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  // ================= CATEGORY ITEM =================
+  Widget categoryItem(
+    String title, {
+    bool selected = false,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(right: 10),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 18,
+        vertical: 10,
+      ),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: selected
+            ? const Color(0xFFFFC72C)
+            : Colors.white,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        title,
+        style: GoogleFonts.poppins(
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+          color: Colors.black,
+        ),
       ),
     );
   }
@@ -173,46 +174,43 @@ class _ProductsPageState extends State<ProductsPage> {
 
 class ProductItem extends StatelessWidget {
   final Map<String, dynamic> product;
-  final VoidCallback onFavoritePressed;
-  final VoidCallback? onTap;
+  final VoidCallback onTap;
 
   const ProductItem({
     super.key,
     required this.product,
-    required this.onFavoritePressed,
-    this.onTap,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final bool isFavorite = product['isFavorite'] ?? false;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // ================= IMAGE =================
-        Expanded(
-          child: Stack(
-            children: [
-              GestureDetector(
-                onTap: onTap,
-                child: Container(
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // ================= IMAGE =================
+          Expanded(
+            child: Stack(
+              children: [
+                Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade100,
-                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                    borderRadius:
+                        BorderRadius.circular(16),
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-
+                    borderRadius:
+                        BorderRadius.circular(16),
                     child: product['image'] != null
                         ? Image.asset(
                             product['image'].toString(),
                             width: double.infinity,
                             height: double.infinity,
                             fit: BoxFit.cover,
-
-                            errorBuilder: (context, error, stackTrace) {
+                            errorBuilder:
+                                (context, error, stackTrace) {
                               return const Center(
                                 child: Icon(
                                   Icons.image_outlined,
@@ -231,59 +229,75 @@ class ProductItem extends StatelessWidget {
                           ),
                   ),
                 ),
-              ),
 
-              // ================= FAVORITE =================
-              Positioned(
-                top: 8,
-                right: 8,
-                child: Material(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(20),
-                    onTap: onFavoritePressed,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Icon(
-                        isFavorite ? Icons.favorite : Icons.favorite_border,
-                        size: 19,
-                        color: isFavorite ? Colors.red : Colors.black,
-                      ),
+                // ================= FAVORITE ICON =================
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: Container(
+                    padding:
+                        const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black
+                              .withOpacity(0.08),
+                          blurRadius: 6,
+                        ),
+                      ],
+                    ),
+                    child: const Icon(
+                      Icons.favorite_border,
+                      size: 19,
+                      color: Colors.black,
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
 
-        const SizedBox(height: 10),
+          const SizedBox(height: 10),
 
-        // ================= PRODUCT NAME =================
-        Text(
-          product['name']?.toString() ?? 'Nama Produk',
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w600),
-        ),
+          // ================= PRODUCT NAME =================
+          Text(
+            product['name']?.toString() ??
+                'Nama Produk',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
 
-        const SizedBox(height: 3),
+          const SizedBox(height: 3),
 
-        // ================= CATEGORY =================
-        Text(
-          product['category']?.toString() ?? 'Category',
-          style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey),
-        ),
+          // ================= CATEGORY =================
+          Text(
+            product['category']?.toString() ??
+                'Category',
+            style: GoogleFonts.poppins(
+              fontSize: 12,
+              color: Colors.grey.shade600,
+            ),
+          ),
 
-        const SizedBox(height: 3),
+          const SizedBox(height: 3),
 
-        // ================= PRICE =================
-        Text(
-          'Rp ${product['price'] ?? 0}',
-          style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold),
-        ),
-      ],
+          // ================= PRICE =================
+          Text(
+            'Rp ${product['price'] ?? 0}',
+            style: GoogleFonts.poppins(
+              fontSize: 13,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xFFB8860B),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
