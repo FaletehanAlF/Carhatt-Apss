@@ -246,8 +246,8 @@ class _HomePageState extends State<HomePage> {
           ),
 
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_bag_outlined),
-            label: 'Cart',
+            icon: Icon(Icons.favorite_outlined),
+            label: 'Wishlist',
           ),
 
           BottomNavigationBarItem(
