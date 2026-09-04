@@ -3,26 +3,56 @@ import 'package:google_fonts/google_fonts.dart';
 import 'homePage.dart';
 import 'registerPage.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  void login() {
+    if (emailController.text == registeredEmail &&
+        passwordController.text == registeredPassword) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomePage(),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Email atau password tidak sesuai'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
-
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(
             horizontal: 28,
             vertical: 40,
           ),
-
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
-              // Logo
               Center(
                 child: Image.asset(
                   'assets/images/logo.png',
@@ -33,7 +63,6 @@ class LoginPage extends StatelessWidget {
 
               const SizedBox(height: 35),
 
-              // Title
               Text(
                 'Welcome Back',
                 style: GoogleFonts.poppins(
@@ -55,7 +84,6 @@ class LoginPage extends StatelessWidget {
 
               const SizedBox(height: 35),
 
-              // Email
               Text(
                 'Email',
                 style: GoogleFonts.poppins(
@@ -67,15 +95,15 @@ class LoginPage extends StatelessWidget {
               const SizedBox(height: 8),
 
               TextField(
+                controller: emailController,
+                keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   hintText: 'Enter your email',
                   prefixIcon: const Icon(
                     Icons.email_outlined,
                   ),
-
                   filled: true,
                   fillColor: Colors.white,
-
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
@@ -85,7 +113,6 @@ class LoginPage extends StatelessWidget {
 
               const SizedBox(height: 22),
 
-              // Password
               Text(
                 'Password',
                 style: GoogleFonts.poppins(
@@ -97,22 +124,18 @@ class LoginPage extends StatelessWidget {
               const SizedBox(height: 8),
 
               TextField(
+                controller: passwordController,
                 obscureText: true,
-
                 decoration: InputDecoration(
                   hintText: 'Enter your password',
-
                   prefixIcon: const Icon(
                     Icons.lock_outline,
                   ),
-
                   suffixIcon: const Icon(
                     Icons.visibility_off_outlined,
                   ),
-
                   filled: true,
                   fillColor: Colors.white,
-
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
@@ -122,10 +145,8 @@ class LoginPage extends StatelessWidget {
 
               const SizedBox(height: 12),
 
-              // Forgot Password
               Align(
                 alignment: Alignment.centerRight,
-
                 child: Text(
                   'Forgot Password?',
                   style: GoogleFonts.poppins(
@@ -138,31 +159,19 @@ class LoginPage extends StatelessWidget {
 
               const SizedBox(height: 30),
 
-              // Login Button
               SizedBox(
                 width: double.infinity,
                 height: 54,
-
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const HomePage(),
-                      ),
-                    );
-                  },
-
+                  onPressed: login,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFFFC72C),
                     foregroundColor: Colors.black,
                     elevation: 0,
-
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-
                   child: Text(
                     'Login',
                     style: GoogleFonts.poppins(
@@ -175,10 +184,8 @@ class LoginPage extends StatelessWidget {
 
               const SizedBox(height: 35),
 
-              // Register
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-
                 children: [
                   Text(
                     'Don\'t have an account? ',
@@ -197,7 +204,6 @@ class LoginPage extends StatelessWidget {
                         ),
                       );
                     },
-
                     child: Text(
                       'Sign Up',
                       style: GoogleFonts.poppins(
@@ -216,4 +222,3 @@ class LoginPage extends StatelessWidget {
     );
   }
 }
-
