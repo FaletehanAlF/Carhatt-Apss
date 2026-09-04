@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/products.dart';
+import './homePage.dart';
 
 class ProductsPage extends StatelessWidget {
   const ProductsPage({super.key});
@@ -87,16 +88,6 @@ class ProductsPage extends StatelessWidget {
 
                 return ProductItem(
                   product: product,
-                  onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Kamu memilih ${product['name'] ?? 'Produk'}',
-                        ),
-                        duration: const Duration(seconds: 2),
-                      ),
-                    );
-                  },
                 );
               },
             ),
@@ -137,115 +128,192 @@ class ProductsPage extends StatelessWidget {
 
 class ProductItem extends StatelessWidget {
   final Map<String, dynamic> product;
-  final VoidCallback onTap;
 
   const ProductItem({
     super.key,
     required this.product,
-    required this.onTap,
   });
+
+  void toggleFavorite(
+    BuildContext context,
+    String name,
+  ) {
+    final updatedFavorites =
+        Set<String>.from(favoriteProducts.value);
+
+    if (updatedFavorites.contains(name)) {
+      updatedFavorites.remove(name);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            '$name dihapus dari favorite',
+          ),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    } else {
+      updatedFavorites.add(name);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            '$name berhasil ditambahkan ke favorite',
+          ),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
+
+    favoriteProducts.value = updatedFavorites;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Stack(
-              children: [
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: product['image'] != null
-                        ? Image.asset(
-                            product['image'].toString(),
-                            width: double.infinity,
-                            height: double.infinity,
-                            fit: BoxFit.cover,
-                            errorBuilder: (
-                              context,
-                              error,
-                              stackTrace,
-                            ) {
-                              return const Center(
+    final String name =
+        product['name']?.toString() ?? 'Nama Produk';
+
+    final String category =
+        product['category']?.toString() ?? 'Category';
+
+    final String price =
+        product['price']?.toString() ?? '0';
+
+    final String? image =
+        product['image']?.toString();
+
+    return ValueListenableBuilder<Set<String>>(
+      valueListenable: favoriteProducts,
+      builder: (context, favorites, child) {
+        final bool isFavorite =
+            favorites.contains(name);
+
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            crossAxisAlignment:
+                CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Stack(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius:
+                            BorderRadius.circular(16),
+                      ),
+                      child: ClipRRect(
+                        borderRadius:
+                            BorderRadius.circular(16),
+                        child: image != null
+                            ? Image.asset(
+                                image,
+                                width: double.infinity,
+                                height: double.infinity,
+                                fit: BoxFit.cover,
+                                errorBuilder:
+                                    (
+                                  context,
+                                  error,
+                                  stackTrace,
+                                ) {
+                                  return const Center(
+                                    child: Icon(
+                                      Icons.image_outlined,
+                                      size: 40,
+                                      color: Colors.grey,
+                                    ),
+                                  );
+                                },
+                              )
+                            : const Center(
                                 child: Icon(
                                   Icons.image_outlined,
                                   size: 40,
                                   color: Colors.grey,
                                 ),
-                              );
-                            },
-                          )
-                        : const Center(
-                            child: Icon(
-                              Icons.image_outlined,
-                              size: 40,
-                              color: Colors.grey,
-                            ),
-                          ),
-                  ),
-                ),
-                Positioned(
-                  top: 10,
-                  right: 10,
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.08),
-                          blurRadius: 6,
+                              ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 10,
+                      right: 10,
+                      child: Container(
+                        decoration:
+                            const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
                         ),
-                      ],
+                        child: IconButton(
+                          onPressed: () {
+                            toggleFavorite(
+                              context,
+                              name,
+                            );
+                          },
+                          icon: Icon(
+                            isFavorite
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: isFavorite
+                                ? Colors.red
+                                : Colors.black,
+                          ),
+                        ),
+                      ),
                     ),
-                    child: const Icon(
-                      Icons.favorite_border,
-                      size: 19,
-                      color: Colors.black,
-                    ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      name,
+                      maxLines: 1,
+                      overflow:
+                          TextOverflow.ellipsis,
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        fontWeight:
+                            FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      category,
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                        color:
+                            Colors.grey.shade600,
+                      ),
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      'Rp $price',
+                      style: GoogleFonts.poppins(
+                        fontSize: 13,
+                        fontWeight:
+                            FontWeight.bold,
+                        color:
+                            const Color(0xFFB8860B),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 10),
-          Text(
-            product['name']?.toString() ?? 'Nama Produk',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: GoogleFonts.poppins(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          const SizedBox(height: 3),
-          Text(
-            product['category']?.toString() ?? 'Category',
-            style: GoogleFonts.poppins(
-              fontSize: 12,
-              color: Colors.grey.shade600,
-            ),
-          ),
-          const SizedBox(height: 3),
-          Text(
-            'Rp ${product['price'] ?? 0}',
-            style: GoogleFonts.poppins(
-              fontSize: 13,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFFB8860B),
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
