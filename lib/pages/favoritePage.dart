@@ -1,37 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import './homePage.dart';
 
-class FavoritePage extends StatelessWidget {
+class FavoritePage extends StatefulWidget {
   const FavoritePage({super.key});
 
   @override
+  State<FavoritePage> createState() => _FavoritePageState();
+}
+
+class _FavoritePageState extends State<FavoritePage> {
+  final Map<String, Map<String, String>> productData = {
+    'K87 T-Shirt': {
+      'category': 'T-Shirt',
+      'price': 'Rp 599.000',
+      'image':
+          'https://i.pinimg.com/1200x/27/d1/a0/27d1a069410f499dc4c91b2aee7306c0.jpg',
+    },
+    'Midweight Hoodie': {
+      'category': 'Hoodie',
+      'price': 'Rp 899.000',
+      'image':
+          'https://i.pinimg.com/1200x/ee/1a/b4/ee1ab49c70520f6f8d8b00c96cab6bdf.jpg',
+    },
+    'Detroit Jacket': {
+      'category': 'Jacket',
+      'price': 'Rp 1.499.000',
+      'image':
+          'https://i.pinimg.com/736x/62/59/51/625951708719a29228a1ddff35fa507d.jpg',
+    },
+    'Double Knee Pants': {
+      'category': 'Pants',
+      'price': 'Rp 1.099.000',
+      'image':
+          'https://i.pinimg.com/1200x/b0/a4/91/b0a491f7b23b43b243f8e9cbc7c2d88c.jpg',
+    },
+  };
+
+  @override
   Widget build(BuildContext context) {
-    final favoriteProducts = [
-      {
-        'name': 'K87 T-Shirt',
-        'category': 'T-Shirt',
-        'price': 'Rp 599.000',
-        'image': 'assets/images/tshirt.jpg',
-      },
-      {
-        'name': 'Midweight Hoodie',
-        'category': 'Hoodie',
-        'price': 'Rp 899.000',
-        'image': 'assets/images/hoodie.jpg',
-      },
-      {
-        'name': 'Detroit Jacket',
-        'category': 'Jacket',
-        'price': 'Rp 1.499.000',
-        'image': 'assets/images/jacket.jpg',
-      },
-      {
-        'name': 'Double Knee Pants',
-        'category': 'Pants',
-        'price': 'Rp 1.099.000',
-        'image': 'assets/images/pants.jpg',
-      },
-    ];
+    final favoriteList = favoriteProducts.toList();
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
@@ -48,7 +56,7 @@ class FavoritePage extends StatelessWidget {
           ),
         ),
       ),
-      body: favoriteProducts.isEmpty
+      body: favoriteList.isEmpty
           ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -71,7 +79,7 @@ class FavoritePage extends StatelessWidget {
                     'Your favorite products will appear here.',
                     style: GoogleFonts.poppins(
                       fontSize: 12,
-                      color: Colors.grey.shade600,
+                      color: Colors.grey,
                     ),
                   ),
                 ],
@@ -79,7 +87,7 @@ class FavoritePage extends StatelessWidget {
             )
           : GridView.builder(
               padding: const EdgeInsets.all(20),
-              itemCount: favoriteProducts.length,
+              itemCount: favoriteList.length,
               gridDelegate:
                   const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
@@ -88,104 +96,102 @@ class FavoritePage extends StatelessWidget {
                 childAspectRatio: 0.68,
               ),
               itemBuilder: (context, index) {
-                final product = favoriteProducts[index];
+                final name = favoriteList[index];
+                final product = productData[name];
 
-                return GestureDetector(
-                  onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Kamu memilih ${product['name']}',
-                        ),
-                      ),
-                    );
-                  },
+                if (product == null) {
+                  return const SizedBox();
+                }
+
+                return Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
                         child: Stack(
                           children: [
-                            Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(16),
+                            ClipRRect(
+                              borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(16),
                               ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(16),
-                                child: Image.asset(
-                                  product['image']!,
-                                  width: double.infinity,
-                                  height: double.infinity,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (
-                                    context,
-                                    error,
-                                    stackTrace,
-                                  ) {
-                                    return const Center(
-                                      child: Icon(
-                                        Icons.image_outlined,
-                                        size: 40,
-                                        color: Colors.grey,
-                                      ),
-                                    );
-                                  },
-                                ),
+                              child: Image.network(
+                                product['image']!,
+                                width: double.infinity,
+                                height: double.infinity,
+                                fit: BoxFit.cover,
                               ),
                             ),
                             Positioned(
                               top: 10,
                               right: 10,
                               child: Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   color: Colors.white,
                                   shape: BoxShape.circle,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color:
-                                          Colors.black.withOpacity(0.08),
-                                      blurRadius: 6,
-                                    ),
-                                  ],
                                 ),
-                                child: const Icon(
-                                  Icons.favorite,
-                                  size: 19,
-                                  color: Colors.red,
+                                child: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      favoriteProducts.remove(name);
+                                    });
+
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          '$name dihapus dari favorite',
+                                        ),
+                                        duration:
+                                            const Duration(seconds: 2),
+                                      ),
+                                    );
+                                  },
+                                  icon: const Icon(
+                                    Icons.favorite,
+                                    color: Colors.red,
+                                  ),
                                 ),
                               ),
                             ),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      Text(
-                        product['name']!,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 3),
-                      Text(
-                        product['category']!,
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          color: Colors.grey.shade600,
-                        ),
-                      ),
-                      const SizedBox(height: 3),
-                      Text(
-                        product['price']!,
-                        style: GoogleFonts.poppins(
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                          color: const Color(0xFFB8860B),
+                      Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.poppins(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              product['category']!,
+                              style: GoogleFonts.poppins(
+                                fontSize: 12,
+                                color: Colors.grey.shade600,
+                              ),
+                            ),
+                            const SizedBox(height: 3),
+                            Text(
+                              product['price']!,
+                              style: GoogleFonts.poppins(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                color: const Color(0xFFB8860B),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
