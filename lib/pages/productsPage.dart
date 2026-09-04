@@ -1,3 +1,4 @@
+```dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/products.dart';
@@ -36,6 +37,7 @@ class _ProductsPageState extends State<ProductsPage> {
     return Scaffold(
       backgroundColor: Colors.white,
 
+      // App Bar
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -58,6 +60,7 @@ class _ProductsPageState extends State<ProductsPage> {
         ],
       ),
 
+      // Body
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -150,16 +153,19 @@ class _ProductsPageState extends State<ProductsPage> {
 
                 return ProductItem(
                   product: product,
+
+                  // Klik produk
                   onTap: () {
-                    scaffoldMessenger.of(context).showSnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                          'kamu memilih ${product['name']}',
+                          'Kamu memilih ${product['name']}',
                         ),
                       ),
                     );
-                    // Navigate to product details page
                   },
+
+                  // Favorite
                   onFavoritePressed: () {
                     setState(() {
                       product['isFavorite'] =
@@ -176,10 +182,12 @@ class _ProductsPageState extends State<ProductsPage> {
   }
 }
 
+// ================= PRODUCT ITEM =================
+
 class ProductItem extends StatelessWidget {
   final Map<String, dynamic> product;
   final VoidCallback onFavoritePressed;
-  final void Function()? onTap;
+  final VoidCallback? onTap;
 
   const ProductItem({
     super.key,
@@ -190,11 +198,13 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isFavorite = product['isFavorite'] ?? false;
+    final bool isFavorite =
+        product['isFavorite'] ?? false;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Product Image
         Expanded(
           child: Stack(
             children: [
@@ -206,24 +216,29 @@ class ProductItem extends StatelessWidget {
                     color: Colors.grey.shade100,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.asset(
-                    product['image'],
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return const Center(
-                        child: Icon(
-                          Icons.image_outlined,
-                          size: 40,
-                          color: Colors.grey,
-                        ),
-                      );
-                    },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.asset(
+                      product['image'],
+                      width: double.infinity,
+                      height: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder:
+                          (context, error, stackTrace) {
+                        return const Center(
+                          child: Icon(
+                            Icons.image_outlined,
+                            size: 40,
+                            color: Colors.grey,
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
 
+              // Favorite Button
               Positioned(
                 top: 8,
                 right: 8,
@@ -254,6 +269,7 @@ class ProductItem extends StatelessWidget {
 
         const SizedBox(height: 10),
 
+        // Product Name
         Text(
           product['name'],
           maxLines: 1,
@@ -266,6 +282,7 @@ class ProductItem extends StatelessWidget {
 
         const SizedBox(height: 3),
 
+        // Category
         Text(
           product['category'],
           style: GoogleFonts.poppins(
@@ -276,6 +293,7 @@ class ProductItem extends StatelessWidget {
 
         const SizedBox(height: 3),
 
+        // Price
         Text(
           'Rp ${product['price']}',
           style: GoogleFonts.poppins(
@@ -287,3 +305,4 @@ class ProductItem extends StatelessWidget {
     );
   }
 }
+```
