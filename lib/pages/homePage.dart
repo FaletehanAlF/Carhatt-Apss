@@ -4,6 +4,8 @@ import './productsPage.dart';
 import './favoritePage.dart';
 import './profilePage.dart';
 
+final Set<String> favoriteProducts = {};
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -60,8 +62,41 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class HomeContent extends StatelessWidget {
+class HomeContent extends StatefulWidget {
   const HomeContent({super.key});
+
+  @override
+  State<HomeContent> createState() => _HomeContentState();
+}
+
+class _HomeContentState extends State<HomeContent> {
+  void toggleFavorite(String name) {
+    setState(() {
+      if (favoriteProducts.contains(name)) {
+        favoriteProducts.remove(name);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              '$name dihapus dari favorite',
+            ),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      } else {
+        favoriteProducts.add(name);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              '$name berhasil ditambahkan ke favorite',
+            ),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -197,25 +232,21 @@ class HomeContent extends StatelessWidget {
               childAspectRatio: 0.68,
               children: [
                 productItem(
-                  context,
                   'K87 T-Shirt',
                   'Rp 599.000',
                   'https://i.pinimg.com/1200x/27/d1/a0/27d1a069410f499dc4c91b2aee7306c0.jpg',
                 ),
                 productItem(
-                  context,
                   'Midweight Hoodie',
                   'Rp 899.000',
                   'https://i.pinimg.com/1200x/ee/1a/b4/ee1ab49c70520f6f8d8b00c96cab6bdf.jpg',
                 ),
                 productItem(
-                  context,
                   'Detroit Jacket',
                   'Rp 1.499.000',
                   'https://i.pinimg.com/736x/62/59/51/625951708719a29228a1ddff35fa507d.jpg',
                 ),
                 productItem(
-                  context,
                   'Double Knee Pants',
                   'Rp 1.099.000',
                   'https://i.pinimg.com/1200x/b0/a4/91/b0a491f7b23b43b243f8e9cbc7c2d88c.jpg',
@@ -250,11 +281,12 @@ class HomeContent extends StatelessWidget {
   }
 
   Widget productItem(
-    BuildContext context,
     String name,
     String price,
     String image,
   ) {
+    final bool isFavorite = favoriteProducts.contains(name);
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -287,18 +319,15 @@ class HomeContent extends StatelessWidget {
                     ),
                     child: IconButton(
                       onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              '$name berhasil ditambahkan ke favorite',
-                            ),
-                            duration: const Duration(seconds: 2),
-                          ),
-                        );
+                        toggleFavorite(name);
                       },
-                      icon: const Icon(
-                        Icons.favorite_border,
-                        color: Colors.black,
+                      icon: Icon(
+                        isFavorite
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        color: isFavorite
+                            ? Colors.red
+                            : Colors.black,
                       ),
                     ),
                   ),
