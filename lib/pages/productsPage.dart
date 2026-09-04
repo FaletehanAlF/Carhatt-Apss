@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import '../data/products.dart';
 
 class ProductsPage extends StatefulWidget {
@@ -27,16 +28,13 @@ class _ProductsPageState extends State<ProductsPage> {
     final filteredProducts = selectedCategory == 'All'
         ? products
         : products
-            .where(
-              (product) =>
-                  product['category'] == selectedCategory,
-            )
-            .toList();
+              .where((product) => product['category'] == selectedCategory)
+              .toList();
 
     return Scaffold(
       backgroundColor: Colors.white,
 
-      // App Bar
+      // ================= APP BAR =================
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -51,15 +49,12 @@ class _ProductsPageState extends State<ProductsPage> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(
-              Icons.search,
-              color: Colors.black,
-            ),
+            icon: const Icon(Icons.search, color: Colors.black),
           ),
         ],
       ),
 
-      // Body
+      // ================= BODY =================
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -67,14 +62,11 @@ class _ProductsPageState extends State<ProductsPage> {
             padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
             child: Text(
               'Find your everyday essentials.',
-              style: GoogleFonts.poppins(
-                fontSize: 14,
-                color: Colors.grey,
-              ),
+              style: GoogleFonts.poppins(fontSize: 14, color: Colors.grey),
             ),
           ),
 
-          // Category
+          // ================= CATEGORY =================
           SizedBox(
             height: 42,
             child: ListView.builder(
@@ -98,9 +90,7 @@ class _ProductsPageState extends State<ProductsPage> {
                       vertical: 10,
                     ),
                     decoration: BoxDecoration(
-                      color: isSelected
-                          ? Colors.black
-                          : Colors.grey.shade100,
+                      color: isSelected ? Colors.black : Colors.grey.shade100,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
@@ -108,9 +98,7 @@ class _ProductsPageState extends State<ProductsPage> {
                       style: GoogleFonts.poppins(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
-                        color: isSelected
-                            ? Colors.white
-                            : Colors.black,
+                        color: isSelected ? Colors.white : Colors.black,
                       ),
                     ),
                   ),
@@ -121,7 +109,7 @@ class _ProductsPageState extends State<ProductsPage> {
 
           const SizedBox(height: 20),
 
-          // Jumlah produk
+          // ================= JUMLAH PRODUK =================
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Text(
@@ -135,13 +123,12 @@ class _ProductsPageState extends State<ProductsPage> {
 
           const SizedBox(height: 12),
 
-          // Product Grid
+          // ================= PRODUCT GRID =================
           Expanded(
             child: GridView.builder(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
               itemCount: filteredProducts.length,
-              gridDelegate:
-                  const SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 14,
                 mainAxisSpacing: 20,
@@ -153,22 +140,21 @@ class _ProductsPageState extends State<ProductsPage> {
                 return ProductItem(
                   product: product,
 
-                  // Klik produk
+                  // Klik card produk
                   onTap: () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                          'Kamu memilih ${product['name']}',
+                          'Kamu memilih ${product['name'] ?? 'Produk'}',
                         ),
                       ),
                     );
                   },
 
-                  // Favorite
+                  // Tombol favorite
                   onFavoritePressed: () {
                     setState(() {
-                      product['isFavorite'] =
-                          !product['isFavorite'];
+                      product['isFavorite'] = !(product['isFavorite'] ?? false);
                     });
                   },
                 );
@@ -181,7 +167,9 @@ class _ProductsPageState extends State<ProductsPage> {
   }
 }
 
-// ================= PRODUCT ITEM =================
+// =====================================================
+// PRODUCT ITEM
+// =====================================================
 
 class ProductItem extends StatelessWidget {
   final Map<String, dynamic> product;
@@ -197,13 +185,12 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isFavorite =
-        product['isFavorite'] ?? false;
+    final bool isFavorite = product['isFavorite'] ?? false;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Product Image
+        // ================= IMAGE =================
         Expanded(
           child: Stack(
             children: [
@@ -217,27 +204,36 @@ class ProductItem extends StatelessWidget {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.asset(
-                      product['image'],
-                      width: double.infinity,
-                      height: double.infinity,
-                      fit: BoxFit.cover,
-                      errorBuilder:
-                          (context, error, stackTrace) {
-                        return const Center(
-                          child: Icon(
-                            Icons.image_outlined,
-                            size: 40,
-                            color: Colors.grey,
+
+                    child: product['image'] != null
+                        ? Image.asset(
+                            product['image'].toString(),
+                            width: double.infinity,
+                            height: double.infinity,
+                            fit: BoxFit.cover,
+
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Center(
+                                child: Icon(
+                                  Icons.image_outlined,
+                                  size: 40,
+                                  color: Colors.grey,
+                                ),
+                              );
+                            },
+                          )
+                        : const Center(
+                            child: Icon(
+                              Icons.image_outlined,
+                              size: 40,
+                              color: Colors.grey,
+                            ),
                           ),
-                        );
-                      },
-                    ),
                   ),
                 ),
               ),
 
-              // Favorite Button
+              // ================= FAVORITE =================
               Positioned(
                 top: 8,
                 right: 8,
@@ -250,13 +246,9 @@ class ProductItem extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(8),
                       child: Icon(
-                        isFavorite
-                            ? Icons.favorite
-                            : Icons.favorite_border,
+                        isFavorite ? Icons.favorite : Icons.favorite_border,
                         size: 19,
-                        color: isFavorite
-                            ? Colors.red
-                            : Colors.black,
+                        color: isFavorite ? Colors.red : Colors.black,
                       ),
                     ),
                   ),
@@ -268,40 +260,30 @@ class ProductItem extends StatelessWidget {
 
         const SizedBox(height: 10),
 
-        // Product Name
+        // ================= PRODUCT NAME =================
         Text(
-          product['name'],
+          product['name']?.toString() ?? 'Nama Produk',
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: GoogleFonts.poppins(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
+          style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w600),
         ),
 
         const SizedBox(height: 3),
 
-        // Category
+        // ================= CATEGORY =================
         Text(
-          product['category'],
-          style: GoogleFonts.poppins(
-            fontSize: 12,
-            color: Colors.grey,
-          ),
+          product['category']?.toString() ?? 'Category',
+          style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey),
         ),
 
         const SizedBox(height: 3),
 
-        // Price
+        // ================= PRICE =================
         Text(
-          'Rp ${product['price']}',
-          style: GoogleFonts.poppins(
-            fontSize: 13,
-            fontWeight: FontWeight.bold,
-          ),
+          'Rp ${product['price'] ?? 0}',
+          style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold),
         ),
       ],
     );
   }
 }
-
