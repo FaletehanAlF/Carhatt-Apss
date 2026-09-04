@@ -9,8 +9,6 @@ class ProductsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
-
-      // ================= APP BAR =================
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -32,19 +30,11 @@ class ProductsPage extends StatelessWidget {
           ),
         ],
       ),
-
-      // ================= BODY =================
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Description
           Padding(
-            padding: const EdgeInsets.fromLTRB(
-              20,
-              8,
-              20,
-              16,
-            ),
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
             child: Text(
               'Find your everyday essentials.',
               style: GoogleFonts.poppins(
@@ -53,20 +43,13 @@ class ProductsPage extends StatelessWidget {
               ),
             ),
           ),
-
-          // ================= CATEGORY =================
           SizedBox(
             height: 45,
             child: ListView(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               scrollDirection: Axis.horizontal,
               children: [
-                categoryItem(
-                  'All',
-                  selected: true,
-                ),
+                categoryItem('All', selected: true),
                 categoryItem('T-Shirt'),
                 categoryItem('Hoodie'),
                 categoryItem('Jacket'),
@@ -76,14 +59,9 @@ class ProductsPage extends StatelessWidget {
               ],
             ),
           ),
-
           const SizedBox(height: 22),
-
-          // ================= JUMLAH PRODUK =================
           Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Text(
               '${products.length} Products',
               style: GoogleFonts.poppins(
@@ -92,18 +70,10 @@ class ProductsPage extends StatelessWidget {
               ),
             ),
           ),
-
           const SizedBox(height: 14),
-
-          // ================= PRODUCT GRID =================
           Expanded(
             child: GridView.builder(
-              padding: const EdgeInsets.fromLTRB(
-                20,
-                0,
-                20,
-                20,
-              ),
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
               itemCount: products.length,
               gridDelegate:
                   const SliverGridDelegateWithFixedCrossAxisCount(
@@ -118,14 +88,12 @@ class ProductsPage extends StatelessWidget {
                 return ProductItem(
                   product: product,
                   onTap: () {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
                           'Kamu memilih ${product['name'] ?? 'Produk'}',
                         ),
-                        duration:
-                            const Duration(seconds: 2),
+                        duration: const Duration(seconds: 2),
                       ),
                     );
                   },
@@ -138,7 +106,6 @@ class ProductsPage extends StatelessWidget {
     );
   }
 
-  // ================= CATEGORY ITEM =================
   Widget categoryItem(
     String title, {
     bool selected = false,
@@ -168,10 +135,6 @@ class ProductsPage extends StatelessWidget {
   }
 }
 
-// =====================================================
-// PRODUCT ITEM
-// =====================================================
-
 class ProductItem extends StatelessWidget {
   final Map<String, dynamic> product;
   final VoidCallback onTap;
@@ -189,7 +152,6 @@ class ProductItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ================= IMAGE =================
           Expanded(
             child: Stack(
               children: [
@@ -197,20 +159,21 @@ class ProductItem extends StatelessWidget {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius:
-                        BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(16),
                   ),
                   child: ClipRRect(
-                    borderRadius:
-                        BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(16),
                     child: product['image'] != null
                         ? Image.asset(
                             product['image'].toString(),
                             width: double.infinity,
                             height: double.infinity,
                             fit: BoxFit.cover,
-                            errorBuilder:
-                                (context, error, stackTrace) {
+                            errorBuilder: (
+                              context,
+                              error,
+                              stackTrace,
+                            ) {
                               return const Center(
                                 child: Icon(
                                   Icons.image_outlined,
@@ -229,21 +192,17 @@ class ProductItem extends StatelessWidget {
                           ),
                   ),
                 ),
-
-                // ================= FAVORITE ICON =================
                 Positioned(
                   top: 10,
                   right: 10,
                   child: Container(
-                    padding:
-                        const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black
-                              .withOpacity(0.08),
+                          color: Colors.black.withOpacity(0.08),
                           blurRadius: 6,
                         ),
                       ],
@@ -258,13 +217,9 @@ class ProductItem extends StatelessWidget {
               ],
             ),
           ),
-
           const SizedBox(height: 10),
-
-          // ================= PRODUCT NAME =================
           Text(
-            product['name']?.toString() ??
-                'Nama Produk',
+            product['name']?.toString() ?? 'Nama Produk',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: GoogleFonts.poppins(
@@ -272,22 +227,15 @@ class ProductItem extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-
           const SizedBox(height: 3),
-
-          // ================= CATEGORY =================
           Text(
-            product['category']?.toString() ??
-                'Category',
+            product['category']?.toString() ?? 'Category',
             style: GoogleFonts.poppins(
               fontSize: 12,
               color: Colors.grey.shade600,
             ),
           ),
-
           const SizedBox(height: 3),
-
-          // ================= PRICE =================
           Text(
             'Rp ${product['price'] ?? 0}',
             style: GoogleFonts.poppins(
