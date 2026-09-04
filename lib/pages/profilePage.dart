@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import './login_page.dart';
+import './loginPage.dart';
 import './registerPage.dart';
 
 class ProfilePage extends StatelessWidget {
