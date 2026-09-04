@@ -150,6 +150,16 @@ class _ProductsPageState extends State<ProductsPage> {
 
                 return ProductItem(
                   product: product,
+                  onTap: () {
+                    scaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'kamu memilih ${product['name']}',
+                        ),
+                      ),
+                    );
+                    // Navigate to product details page
+                  },
                   onFavoritePressed: () {
                     setState(() {
                       product['isFavorite'] =
@@ -169,11 +179,13 @@ class _ProductsPageState extends State<ProductsPage> {
 class ProductItem extends StatelessWidget {
   final Map<String, dynamic> product;
   final VoidCallback onFavoritePressed;
+  final void Function()? onTap;
 
   const ProductItem({
     super.key,
     required this.product,
     required this.onFavoritePressed,
+    this.onTap,
   });
 
   @override
@@ -186,12 +198,14 @@ class ProductItem extends StatelessWidget {
         Expanded(
           child: Stack(
             children: [
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(10),
-                ),
+              GestureDetector(
+                onTap: onTap,
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.asset(
